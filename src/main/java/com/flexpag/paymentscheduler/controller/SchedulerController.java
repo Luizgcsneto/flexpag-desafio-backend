@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flexpag.paymentscheduler.Scheduler;
@@ -21,7 +22,7 @@ import com.flexpag.paymentscheduler.service.SchedulerService;
 public class SchedulerController {
 	
 	@Autowired
-	SchedulerService service;
+	private SchedulerService service;
 	
 	//Endpoint GET ALL
 	@GetMapping("/scheduler")
@@ -31,12 +32,11 @@ public class SchedulerController {
 	
 	//Endpoint GET por ID
 	@GetMapping("/scheduler/{id}")
-	public ResponseEntity<Optional<Scheduler>> buscarId(@PathVariable Long id, @RequestBody Scheduler scheduler){
+	public ResponseEntity<Optional<Scheduler>> buscarId(@PathVariable Long id){
 		return service.buscarId(id);
 	}
 
 	//Endpoint POST
-	
 	@PostMapping("/scheduler")
 	public ResponseEntity<Scheduler> agendarPagamento(@RequestBody Scheduler scheduler){
 		Scheduler obj =  service.criarAgendamento(scheduler);
@@ -44,19 +44,27 @@ public class SchedulerController {
 	}
 	
 	//Endpoint PUT
-	
 	@PutMapping("/scheduler/{id}")
-	public Scheduler atualizarPagamento(@PathVariable Long id, @RequestBody Scheduler scheduler){
-		return service.atualizarAgendamento(id, scheduler);
+	public ResponseEntity<Scheduler> atualizarPagamento(@PathVariable Long id, @RequestBody Scheduler scheduler){
+		ResponseEntity<Scheduler> obj = service.atualizarAgendamento(id, scheduler);
+		return obj;
 	}
 	
 	//Endpoint DELETE
 	
 	@DeleteMapping("/scheduler/{id}")
-	public ResponseEntity<Scheduler> deletarId(@PathVariable Long id, Scheduler scheduler){
-		return null;
+	public void deletarId(@PathVariable Long id){
+		service.deletarAgendamento(id);
 	}
 	
+	//Endpoint GET por Status
+	@GetMapping("/scheduler/search")
+	public ResponseEntity<List<Scheduler>> filtrar(@RequestParam(value="status", required = false) String status){
+		
+		List<Scheduler> obj = service.consultarStatus(status);
+		
+		return ResponseEntity.ok().body(obj);
+	}
 	
 		
 		
