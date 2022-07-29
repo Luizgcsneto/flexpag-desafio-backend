@@ -1,28 +1,22 @@
-package com.flexpag.paymentscheduler;
+package com.flexpag.paymentscheduler.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.flexpag.paymentscheduler.entities.enums.StatusPayment;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-
+@Data
 @Entity
 public class Scheduler implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -34,5 +28,6 @@ public class Scheduler implements Serializable {
 	private LocalDateTime date;
 	private BigDecimal price;
 	private String description;
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private StatusPayment status;
 }

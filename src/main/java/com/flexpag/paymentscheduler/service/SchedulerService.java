@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.flexpag.paymentscheduler.Scheduler;
+import com.flexpag.paymentscheduler.dto.PaymentScheduleDTO;
+import com.flexpag.paymentscheduler.entities.Scheduler;
+import com.flexpag.paymentscheduler.entities.enums.StatusPayment;
 import com.flexpag.paymentscheduler.repository.SchedulerRepository;
 
 @Service
@@ -32,12 +34,11 @@ public class SchedulerService {
 		}
 	
 	//Criar Agendamento
-	public Scheduler criarAgendamento(@RequestBody Scheduler scheduler) {
-
-		scheduler.setStatus("pending");
+	public PaymentScheduleDTO criarAgendamento(@RequestBody Scheduler scheduler) {
+		scheduler.setStatus(StatusPayment.Pending);
 		Scheduler obj = repo.save(scheduler);
-		
-		return obj;
+		PaymentScheduleDTO dto = new PaymentScheduleDTO(obj);
+		return dto;
 	}
 	
 	//Atualizar agendamento por ID
@@ -45,11 +46,11 @@ public class SchedulerService {
 		
 		Optional<Scheduler> obj = repo.findById(id);
 		
-		String status = obj.get().getStatus();
+		StatusPayment status = obj.get().getStatus();
 		
 		//Permitido apenas a atualização da data:hora e descrição
-		if(obj.isPresent() && !status.equalsIgnoreCase("paid")) {
-			scheduler.setId(id);
+		if(obj.isPresent() && status  != StatusPayment.Paid) {
+			scheduler.setStatus(StatusPayment.Pending);
 			scheduler.setDate(scheduler.getDate());
 			scheduler.setDescription(scheduler.getDescription());
 			scheduler.setPrice(obj.get().getPrice());
@@ -66,8 +67,9 @@ public class SchedulerService {
 		
 		Optional<Scheduler> obj = repo.findById(id);
 		
-		String status = obj.get().getStatus();
-		if(obj.isPresent() && !status.equalsIgnoreCase("paid")) {
+		StatusPayment status = obj.get().getStatus();
+		
+		if(obj.isPresent() && status  != StatusPayment.Paid) {
 			repo.deleteById(id);
 			ResponseEntity.ok().build();
 		}else {

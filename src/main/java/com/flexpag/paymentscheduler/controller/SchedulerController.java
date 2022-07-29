@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flexpag.paymentscheduler.Scheduler;
+import com.flexpag.paymentscheduler.dto.PaymentScheduleDTO;
+import com.flexpag.paymentscheduler.entities.Scheduler;
 import com.flexpag.paymentscheduler.service.SchedulerService;
 
 @RestController
@@ -26,26 +26,26 @@ public class SchedulerController {
 	
 	//Endpoint GET ALL
 	@GetMapping("/scheduler")
-	public ResponseEntity<List<Scheduler>> buscarTodos(){
+	public ResponseEntity<List<Scheduler>> findAll(){
 		return service.buscarTodos();
 	}
 	
 	//Endpoint GET por ID
 	@GetMapping("/scheduler/{id}")
-	public ResponseEntity<Optional<Scheduler>> buscarId(@PathVariable Long id){
+	public ResponseEntity<Optional<Scheduler>> findId(@PathVariable Long id){
 		return service.buscarId(id);
 	}
 
 	//Endpoint POST
 	@PostMapping("/scheduler")
-	public ResponseEntity<Scheduler> agendarPagamento(@RequestBody Scheduler scheduler){
-		Scheduler obj =  service.criarAgendamento(scheduler);
-		return ResponseEntity.status(HttpStatus.CREATED).body(obj);
+	public PaymentScheduleDTO paymentSchedule(@RequestBody Scheduler scheduler){
+		PaymentScheduleDTO obj =  service.criarAgendamento(scheduler);
+		return obj;
 	}
 	
 	//Endpoint PUT
 	@PutMapping("/scheduler/{id}")
-	public ResponseEntity<Scheduler> atualizarPagamento(@PathVariable Long id, @RequestBody Scheduler scheduler){
+	public ResponseEntity<Scheduler> updateSchedule(@PathVariable Long id, @RequestBody Scheduler scheduler){
 		ResponseEntity<Scheduler> obj = service.atualizarAgendamento(id, scheduler);
 		return obj;
 	}
@@ -59,7 +59,7 @@ public class SchedulerController {
 	
 	//Endpoint GET por Status
 	@GetMapping("/scheduler/search")
-	public ResponseEntity<List<Scheduler>> filtrar(@RequestParam(value="status", required = false) String status){
+	public ResponseEntity<List<Scheduler>> search(@RequestParam(value="status", required = false) String status){
 		
 		List<Scheduler> obj = service.consultarStatus(status);
 		
