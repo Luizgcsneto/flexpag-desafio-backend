@@ -1,33 +1,35 @@
 package com.flexpag.paymentscheduler.tasks;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.flexpag.paymentscheduler.entities.Scheduler;
+import com.flexpag.paymentscheduler.entities.enums.StatusPayment;
+import com.flexpag.paymentscheduler.repository.SchedulerRepository;
 
 @Component
 public class VerifyScheduler {
-//	
-//	private SchedulerRepository repo;
-//	
-//	@Scheduled(cron="0/1 * 0 ? * * *")
-//	public List<Scheduler> verificarAgendamento() {
-//		
-//		List<Scheduler> obj = repo.findAll();
-//		
-//		obj.forEach(item -> {
-//			
-//			Long id = item.getId();
-//			String status = item.getStatus();
-//			LocalDateTime date = item.getDate();
-//			
-//			if(date.isBefore(LocalDateTime.now()) || date.isEqual(LocalDateTime.now())){
-//				item.setId(id);
-//				item.setStatus("paid");
-//				repo.save(item);
-//			}
-//			
-//			
-//		});
-//		
-//		return null;
-//	}
-
-}
+	
+	@Autowired
+	private SchedulerRepository repo;
+	
+	@Scheduled(cron="0 0/1 * 1/1 * ?")
+	public List<Scheduler> verificarAgendamento() {
+		
+		
+		List<Scheduler> obj = repo.findByDateLessThanEqualAndStatus(LocalDateTime.now(), StatusPayment.Pending);
+		
+		obj.forEach(item -> {
+				
+				item.setStatus(StatusPayment.Paid);
+				System.out.println("Rodando CRON");
+				repo.save(item);
+				});
+		
+		return obj;
+		}
+	}

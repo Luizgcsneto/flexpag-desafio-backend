@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flexpag.paymentscheduler.dto.PaymentScheduleDTO;
+import com.flexpag.paymentscheduler.dto.FindAllDto;
+import com.flexpag.paymentscheduler.dto.PaymentScheduleDto;
 import com.flexpag.paymentscheduler.entities.Scheduler;
 import com.flexpag.paymentscheduler.service.SchedulerService;
 
@@ -25,43 +26,44 @@ public class SchedulerController {
 	private SchedulerService service;
 	
 	//Endpoint GET ALL
-	@GetMapping("/scheduler")
-	public ResponseEntity<List<Scheduler>> findAll(){
-		return service.buscarTodos();
+	@GetMapping("/schedules")
+	public List<FindAllDto> findAll(){
+		List<FindAllDto> obj = service.findAll();
+		return obj;
 	}
 	
 	//Endpoint GET por ID
-	@GetMapping("/scheduler/{id}")
+	@GetMapping("/schedules/{id}")
 	public ResponseEntity<Optional<Scheduler>> findId(@PathVariable Long id){
-		return service.buscarId(id);
+		return service.findId(id); 
 	}
 
 	//Endpoint POST
-	@PostMapping("/scheduler")
-	public PaymentScheduleDTO paymentSchedule(@RequestBody Scheduler scheduler){
-		PaymentScheduleDTO obj =  service.criarAgendamento(scheduler);
+	@PostMapping("/schedules")
+	public PaymentScheduleDto paymentSchedule(@RequestBody Scheduler scheduler){
+		PaymentScheduleDto obj =  service.paymentSchedule(scheduler);
 		return obj;
 	}
 	
 	//Endpoint PUT
-	@PutMapping("/scheduler/{id}")
-	public ResponseEntity<Scheduler> updateSchedule(@PathVariable Long id, @RequestBody Scheduler scheduler){
-		ResponseEntity<Scheduler> obj = service.atualizarAgendamento(id, scheduler);
+	@PutMapping("/schedules/{id}")
+	public ResponseEntity<Optional<Scheduler>> updateSchedule(@PathVariable Long id, @RequestBody Scheduler scheduler){
+		ResponseEntity<Optional<Scheduler>> obj = service.updateSchedule(id, scheduler);
 		return obj;
 	}
 	
 	//Endpoint DELETE
 	
-	@DeleteMapping("/scheduler/{id}")
-	public void deletarId(@PathVariable Long id){
-		service.deletarAgendamento(id);
+	@DeleteMapping("/schedules/{id}")
+	public void deleteId(@PathVariable Long id){
+		service.deleteId(id);
 	}
 	
 	//Endpoint GET por Status
-	@GetMapping("/scheduler/search")
-	public ResponseEntity<List<Scheduler>> search(@RequestParam(value="status", required = false) String status){
+	@GetMapping("/schedules/search")
+	public ResponseEntity<List<Scheduler>> searchStatus(@RequestParam(value="status", required = false) String status){
 		
-		List<Scheduler> obj = service.consultarStatus(status);
+		List<Scheduler> obj = service.searchStatus(status);
 		
 		return ResponseEntity.ok().body(obj);
 	}

@@ -13,18 +13,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentScheduleDTO implements Serializable {
+public class PaymentScheduleDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-
-	public PaymentScheduleDTO(Scheduler scheduler) {
+	
+	public PaymentScheduleDto(Scheduler scheduler) {
 		id = scheduler.getId();
 	}
 
 	
-	
-	
-
-
 }
