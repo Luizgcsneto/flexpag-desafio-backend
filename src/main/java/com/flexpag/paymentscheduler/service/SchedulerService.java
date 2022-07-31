@@ -64,21 +64,22 @@ public class SchedulerService {
 		}
 	
 	//Deletar agendamento por ID
-	public ResponseEntity<Scheduler> deleteId(@PathVariable Long id){
+	public ResponseEntity<Optional<Scheduler>> deleteId(@PathVariable Long id){
 		
 		Optional<Scheduler> obj = repo.findById(id);
 		
 		if(obj.isPresent()) {
-			if(obj.get().getStatus()  != StatusPayment.Paid) {
-				repo.deleteById(id);
-				return ResponseEntity.ok().build();
-				}else {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			if(obj.get().getStatus() != StatusPayment.Paid) {
+			repo.deleteById(id);
+			return ResponseEntity.ok().build();
+			}else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 				}
-			}else{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+					}else {
+						return ResponseEntity.status(HttpStatus.NOT_FOUND).body(obj);
+					}
 		}
-	}
+
 	
 	//Filtrando Status
 	public List<Scheduler> searchStatus(String status) {

@@ -57,8 +57,8 @@ public class SchedulerController {
 	//Endpoint DELETE
 	
 	@DeleteMapping("/schedules/{id}")
-	public void deleteId(@PathVariable Long id){
-		service.deleteId(id);
+	public ResponseEntity<Optional<Scheduler>> deleteId(@PathVariable Long id){
+		return service.deleteId(id);
 	}
 	
 	//Endpoint GET por Status
