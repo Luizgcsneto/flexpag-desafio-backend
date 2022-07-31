@@ -3,6 +3,8 @@ package com.flexpag.paymentscheduler.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,20 +36,20 @@ public class SchedulerController {
 	
 	//Endpoint GET por ID
 	@GetMapping("/schedules/{id}")
-	public ResponseEntity<Optional<Scheduler>> findId(@PathVariable Long id){
+	public ResponseEntity<Optional<Scheduler>> findId(@Valid @PathVariable Long id){
 		return service.findId(id); 
 	}
 
 	//Endpoint POST
 	@PostMapping("/schedules")
-	public PaymentScheduleDto paymentSchedule(@RequestBody Scheduler scheduler){
+	public PaymentScheduleDto paymentSchedule(@Valid @RequestBody Scheduler scheduler){
 		PaymentScheduleDto obj =  service.paymentSchedule(scheduler);
 		return obj;
 	}
 	
 	//Endpoint PUT
 	@PutMapping("/schedules/{id}")
-	public ResponseEntity<Optional<Scheduler>> updateSchedule(@PathVariable Long id, @RequestBody Scheduler scheduler){
+	public ResponseEntity<Optional<Scheduler>> updateSchedule(@Valid @PathVariable Long id, @RequestBody Scheduler scheduler){
 		ResponseEntity<Optional<Scheduler>> obj = service.updateSchedule(id, scheduler);
 		return obj;
 	}

@@ -24,12 +24,9 @@ public class VerifyScheduler {
 		List<Scheduler> obj = repo.findByDateLessThanEqualAndStatus(LocalDateTime.now(), StatusPayment.Pending);
 		
 		obj.forEach(item -> {
-				
 				item.setStatus(StatusPayment.Paid);
-				System.out.println("Rodando CRON");
 				repo.save(item);
 				});
-		
 		return obj;
 		}
 	}
