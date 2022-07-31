@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flexpag.paymentscheduler.dto.FindAllDto;
 import com.flexpag.paymentscheduler.dto.PaymentScheduleDto;
 import com.flexpag.paymentscheduler.entities.Scheduler;
+import com.flexpag.paymentscheduler.entities.enums.StatusPayment;
 import com.flexpag.paymentscheduler.service.SchedulerService;
 
 @RestController
@@ -63,7 +64,7 @@ public class SchedulerController {
 	
 	//Endpoint GET por Status
 	@GetMapping("/schedules/search")
-	public ResponseEntity<List<Scheduler>> searchStatus(@RequestParam(value="status", required = false) String status){
+	public ResponseEntity<List<Scheduler>> searchStatus(@RequestParam(value="status", required = false) StatusPayment status){
 		
 		List<Scheduler> obj = service.searchStatus(status);
 		

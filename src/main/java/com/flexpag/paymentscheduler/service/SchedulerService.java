@@ -82,7 +82,7 @@ public class SchedulerService {
 
 	
 	//Filtrando Status
-	public List<Scheduler> searchStatus(String status) {
+	public List<Scheduler> searchStatus(StatusPayment status) {
 		List<Scheduler> obj = repo.findByStatus(status);
 		return obj;
 	}
