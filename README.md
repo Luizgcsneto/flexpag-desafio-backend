@@ -92,3 +92,16 @@ spring:
 ---
 
 _O desafio acima foi cuidadosamente construído para propósitos de avaliação apenas._
+
+---
+
+## Acessos aos EndPoints:
+
+| Verbo |        Detalhes                |                       URI                        |              
+| ------| -------------------------------| -------------------------------------------------|
+|  GET  |  Consultar Agendamentos        |        localhost:8080/schedules                  |
+|  POST |  Criar Agendamentos            |        localhost:8080/schedules                  |
+|  GET  |  Buscar por ID                 |        localhost:8080/schedules/                 |
+|  PUT  |  Atualizar Agendamentos        |        localhost:8080/schedules/                 |
+|  DEL  |  Deletar Agendamentos          |        localhost:8080/schedules/                 |
+|  GET  |  Filtrar status Paid OR Pending|        localhost:8080/schedules/search?status=   |
