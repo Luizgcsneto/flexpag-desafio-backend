@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flexpag.paymentscheduler.dto.FindAllDto;
+import com.flexpag.paymentscheduler.dto.FindIdDto;
 import com.flexpag.paymentscheduler.dto.PaymentScheduleDto;
 import com.flexpag.paymentscheduler.entities.Scheduler;
 import com.flexpag.paymentscheduler.entities.enums.StatusPayment;
@@ -37,24 +39,23 @@ public class SchedulerController {
 	
 	//Endpoint GET por ID
 	@GetMapping("/schedules/{id}")
-	public ResponseEntity<Optional<Scheduler>> findId(@Valid @PathVariable Long id){
-		return service.findId(id); 
+	public FindIdDto findId(@Valid @PathVariable Long id){
+		return service.findId(id);
 	}
 
 	//Endpoint POST
 	@PostMapping("/schedules")
-	public PaymentScheduleDto paymentSchedule(@Valid @RequestBody Scheduler scheduler){
-		PaymentScheduleDto obj =  service.paymentSchedule(scheduler);
-		return obj;
+	public ResponseEntity<PaymentScheduleDto> paymentSchedule(@Valid @RequestBody PaymentScheduleDto objDto){
+		PaymentScheduleDto obj =  service.paymentSchedule(objDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(obj);
 	}
 	
-	//Endpoint PUT
 	@PutMapping("/schedules/{id}")
-	public ResponseEntity<Optional<Scheduler>> updateSchedule(@Valid @PathVariable Long id, @RequestBody Scheduler scheduler){
+	public ResponseEntity<Optional<Scheduler>> updateSchedule(@PathVariable Long id, @RequestBody Scheduler scheduler){
 		ResponseEntity<Optional<Scheduler>> obj = service.updateSchedule(id, scheduler);
 		return obj;
 	}
-	
+
 	//Endpoint DELETE
 	
 	@DeleteMapping("/schedules/{id}")
