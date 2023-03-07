@@ -8,6 +8,7 @@ public class PaymentSchedulerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PaymentSchedulerApplication.class, args);
+
 	}
 
 }
