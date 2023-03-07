@@ -3,20 +3,27 @@ package com.flexpag.paymentscheduler.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.flexpag.paymentscheduler.enums.TypeStatus;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @SQLDelete(sql="Update PAYMENTS_MODEL set STATUS='DELETED' where ID=?")
 @Where(clause = "STATUS = 'ACTIVE'")
-public class PaymentsModel {
+public class PaymentsModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,17 +43,6 @@ public class PaymentsModel {
     public void setStaus() {
 
         this.status="DELETED";
-    }
-
-    public PaymentsModel(Long id, BigDecimal valor, LocalDateTime data) {
-        this.id = id;
-        this.valor = valor;
-        this.data = data;
-        this.status = "ACTIVE";
-    }
-
-    public PaymentsModel() {
-
     }
 
     public Long getId() {
