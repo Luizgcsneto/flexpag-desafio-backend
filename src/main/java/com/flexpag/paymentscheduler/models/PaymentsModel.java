@@ -35,7 +35,10 @@ public class PaymentsModel implements Serializable {
 
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone="GMT-3")
-    private LocalDateTime data;
+    private LocalDateTime dataCriacao;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone="GMT-3")
+    private LocalDateTime dataAtualizacao;
 
     private String status = "ACTIVE";
 
@@ -61,12 +64,12 @@ public class PaymentsModel implements Serializable {
         this.valor = valor;
     }
 
-    public LocalDateTime getData() {
-        return data;
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setData(LocalDateTime data) {
-        this.data = data;
+    public void setData(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public String getStatus() {

@@ -49,6 +49,7 @@ public class PaymentsService {
     {
         return paymentsRepository.findById(id).map(payments -> {
             payments.setValor(paymentsDto.valor());
+            payments.setDataAtualizacao(LocalDateTime.now(ZoneId.of("GMT-3")));
             return paymentsMapper.toDto(paymentsRepository.save(payments));
         }).orElseThrow(() -> new RecordNotFoundException(id));
     }

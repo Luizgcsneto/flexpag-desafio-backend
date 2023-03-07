@@ -29,7 +29,7 @@ public class PaymentsMapper {
             paymentsModel.setId(paymentsDto.id());
         }
         paymentsModel.setValor(paymentsDto.valor());
-        paymentsModel.setData(LocalDateTime.now(ZoneId.of("GMT-3")));
+        paymentsModel.setDataCriacao(LocalDateTime.now(ZoneId.of("GMT-3")));
 
         return paymentsModel;
     }
